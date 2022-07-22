@@ -6,11 +6,11 @@ const router = express.Router();
 
 const defaultRoutes = [
     {
-        path: 'api/auth',
+        path: '/api/auth',
         route: authRoute,
     },
     {
-        path: 'api/users',
+        path: '/api/users',
         route: userRoute,
     },
 ];
