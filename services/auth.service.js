@@ -1,15 +1,34 @@
-const httpStatus = require('http-status');
-const tokenService = require('./token.service');
-const userService = require('./user.service');
-const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
-const { tokenTypes } = require('../config/tokens');
+const {User} = require("../models");
+const bcrypt = require('bcryptjs')
+const {TokenService, UserService} = require("./index");
+
+const encryptPassword = async (password) => {
+    return await bcrypt.hash(password, 10);
+}
 
 
-const loginUserWithEmailAndPassword = async (email, password) => {
+const decryptPassword = async (password) => {
+    return await bcrypt.decode(password, 10);
+}
 
+
+const findUser = async (email) => {
+    return  User.findOne(email);
+}
+
+const loginUserWithEmailAndPassword = async (user) => {
+    const accessToken = await TokenService.generateAccessToken(user);
+    const refreshToken = await TokenService.generateRefreshToken(user);
+    await UserService.updateUser(user.email, refreshToken);
+    return {
+        accessToken, refreshToken
+    }
 };
 
+const findUserByToken = async (token) => {
+    return User.findOne({token});
+}
 
 const logout = async (refreshToken) => {
 
@@ -34,4 +53,8 @@ module.exports = {
     refreshAuth,
     resetPassword,
     verifyEmail,
+    findUser,
+    encryptPassword,
+    decryptPassword,
+    findUserByToken
 };
