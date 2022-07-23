@@ -1,8 +1,6 @@
-const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const {AuthService, UserService, TokenService} = require('../services');
 const bcrypt = require('bcryptjs')
-const {User} = require("../models");
 
 const register = catchAsync(async (req, res) => {
     const {email, pw1, pw2, phone, name} = req.body;
@@ -45,7 +43,15 @@ const logout = catchAsync(async (req, res) => {
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
-
+    const {refreshToken} = req.body;
+    if (!refreshToken) return res.sendStatus(401);
+    const found = await AuthService.findUserByToken(refreshToken);
+    if (!found) return res.sendStatus(401);
+    const newAccessToken = await TokenService.verifyToken(refreshToken);
+    if (!newAccessToken) {
+        return res.send(403)
+    }
+    return res.json(newAccessToken)
 });
 
 const forgotPassword = catchAsync(async (req, res) => {

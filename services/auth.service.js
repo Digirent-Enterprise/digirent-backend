@@ -26,8 +26,9 @@ const loginUserWithEmailAndPassword = async (user) => {
     }
 };
 
-
-
+const findUserByToken = async (token) => {
+    return User.findOne({token});
+}
 
 const logout = async (refreshToken) => {
 
@@ -54,5 +55,6 @@ module.exports = {
     verifyEmail,
     findUser,
     encryptPassword,
-    decryptPassword
+    decryptPassword,
+    findUserByToken
 };
