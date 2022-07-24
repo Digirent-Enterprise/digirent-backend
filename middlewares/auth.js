@@ -13,6 +13,7 @@ const authenticateToken = async (req, res, next) => {
 
 const authenticateAdmin = async(req, res, next) => {
     const authHeader = req.headers['authorization'];
+    console.log('auth token', authHeader)
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) res.sendStatus(401);
     jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET, (err, user)=> {

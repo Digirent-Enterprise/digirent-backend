@@ -11,7 +11,7 @@ const defaultRoutes = [
         route: authRoute,
     },
     {
-        path: '/api/users',
+        path: '/api/user',
         route: userRoute,
     },
     {
@@ -21,10 +21,6 @@ const defaultRoutes = [
     {
         path: '/api/product',
         route: productRoute
-    },
-    {
-        path: "/api/uploadedImage",
-        route: express.static('uploadedImage')
     }
 ];
 
