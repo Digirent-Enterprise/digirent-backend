@@ -16,7 +16,6 @@ const register = catchAsync(async (req, res) => {
     if (pw1.toLowerCase() !== pw2.toLowerCase()) {
         return res.status(400).send("Password doest not match");
     }
-
     const encryptedPassword = await AuthService.encryptPassword(pw1);
     const currentTime = (new Date()).toLocaleDateString()
     await UserService.createUser(name, email, encryptedPassword, 'user', false, '', phone, currentTime);
@@ -28,14 +27,13 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
     const {email, password} = req.body;
     const found = await AuthService.findUser({email});
-    if (found){
+    if (found) {
         if (bcrypt.compare(password, found.password)) {
             const response = await AuthService.loginUserWithEmailAndPassword(found);
-            return res.json(response)
+            return res.sendStatus(200).json(response)
         }
     }
     return res.sendStatus(404);
-
 });
 
 const logout = catchAsync(async (req, res) => {

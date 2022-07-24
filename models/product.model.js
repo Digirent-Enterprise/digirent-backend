@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -26,10 +26,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: {
+    images: [{
         type: String,
         // required: true,
-    },
+    }],
     rentalCostType: {
         type: String,
         required: true,

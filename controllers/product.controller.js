@@ -1,4 +1,4 @@
-const {Product, Category} = require("../BE-digirent/models/models");
+const {Product, Category} = require("../models");
 const fs = require('fs');
 
 const productController = {
@@ -12,7 +12,7 @@ const productController = {
                 category: req.body.category,
                 brand: req.body.brand,
                 description: req.body.description,
-                // image: req.file?.filename,
+                images: [],
                 rentalCost: req.body.rentalCost,
                 rentalCostType: req.body.rentalCostType,
                 status: req.body.status,
@@ -25,7 +25,7 @@ const productController = {
                     path = path + files.path + ','
                 })
                 path = path.substring(0, path.lastIndexOf(","))
-                newProduct.image = path
+                newProduct.images.push(path)
             }
 
             const savedProduct = await newProduct.save();
