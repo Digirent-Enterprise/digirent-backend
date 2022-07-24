@@ -17,6 +17,12 @@ const findUser = async (email) => {
     return  User.findOne(email);
 }
 
+const logout = async(email) => {
+    const user = await User.findOneAndUpdate({email}, {token: ''});
+    if (!user) return false;
+    return user;
+}
+
 const loginUserWithEmailAndPassword = async (user) => {
     const accessToken = await TokenService.generateAccessToken(user);
     const refreshToken = await TokenService.generateRefreshToken(user);
@@ -30,9 +36,6 @@ const findUserByToken = async (token) => {
     return User.findOne({token});
 }
 
-const logout = async (refreshToken) => {
-
-};
 
 
 const refreshAuth = async (refreshToken) => {
@@ -49,12 +52,12 @@ const verifyEmail = async (verifyEmailToken) => {
 
 module.exports = {
     loginUserWithEmailAndPassword,
-    logout,
     refreshAuth,
     resetPassword,
     verifyEmail,
     findUser,
     encryptPassword,
     decryptPassword,
-    findUserByToken
+    findUserByToken,
+    logout
 };
