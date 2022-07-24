@@ -1,4 +1,4 @@
-const {Product, Category} = require("../models/models");
+const {Product, Category} = require("../BE-digirent/models/models");
 
 const categoryController = {
     //add category

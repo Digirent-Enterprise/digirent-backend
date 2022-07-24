@@ -13,6 +13,9 @@ const defaultRoutes = [
         path: '/api/users',
         route: userRoute,
     },
+    {
+
+    }
 ];
 
 defaultRoutes.forEach((route) => {

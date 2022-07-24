@@ -1,23 +1,4 @@
-const mongoose = require('mongoose');
-
-const categorySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    
-    image: {
-        type: String,
-        required: true,
-    },
-
-    products: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product"
-        }
-    ]
-});
+import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -64,7 +45,6 @@ const productSchema = new mongoose.Schema({
     },
 });
 
-let Category = mongoose.model('Category', categorySchema);
 let Product = mongoose.model('Product', productSchema);
 
-module.exports = {Category, Product};
+module.exports = Product

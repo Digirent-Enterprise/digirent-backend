@@ -5,8 +5,8 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const morgan = require("morgan");
-const categoryRoute = require("./routes/category.route");
-const productRoute = require("./routes/product.route");
+const categoryRoute = require("../routes/v1/category.route");
+const productRoute = require("../routes/v1/product.route");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
