@@ -1,30 +1,32 @@
 const {Product, Category} = require("../models/models");
+const fs = require('fs');
 
 const productController = {
     //add product
     addProduct: async(req, res) => {
         try{
             // const newProduct = new Product(req.body);
-            // if(req.files){
-            //     let path = ''
-            //     req.files.forEach(function(files, index, arr){
-            //         path = path + files.path + ','
-            //     })
-            //     path = path.substring(0, path.lastIndexOf(","))
-            //     newProduct.image = path
-            // }
 
             const newProduct = new Product({
                 name: req.body.name,
                 category: req.body.category,
                 brand: req.body.brand,
                 description: req.body.description,
-                image: req.files?.filename,
+                // image: req.file?.filename,
                 rentalCost: req.body.rentalCost,
                 rentalCostType: req.body.rentalCostType,
                 status: req.body.status,
                 serial: req.body.serial,
             });
+
+            if(req.files){
+                let path = ''
+                req.files.forEach(function(files, index, arr){
+                    path = path + files.path + ','
+                })
+                path = path.substring(0, path.lastIndexOf(","))
+                newProduct.image = path
+            }
 
             const savedProduct = await newProduct.save();
             if(req.body.category){
