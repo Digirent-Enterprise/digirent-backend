@@ -1,13 +1,15 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const app = require('./app');
-const config = require('./config/config');
 
 
 let server;
 
-mongoose.connect(config.mongoose.url, config.mongoose.options).then(()=> {
-    server = app.listen(config.port, () => {
+mongoose.connect(process.env.MONGODB_URL).then(()=> {
+    server = app.listen(process.env.PORT, () => {
+        console.log('welcome to digirentall server!')
         console.log('connected to mongoose');
-        console.log('server run at port', config.port)
+        console.log('server run at port', process.env.PORT)
     })
 })

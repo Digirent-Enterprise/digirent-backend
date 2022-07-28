@@ -1,45 +1,40 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const mongoSanitize = require('express-mongo-sanitize');
-const compression = require('compression');
 const cors = require('cors');
-const passport = require('passport');
-const httpStatus = require('http-status');
-const config = require('./config/config');
-const { jwtStrategy } = require('./config/passport');
 const routes = require('./routes/v1');
+const bodyParser = require('body-parser');
 
 const app = express();
-
-// security config
-app.use(helmet());
-
-// parse json request with express
-app.use(express.json())
-
 // parse url encoded
-app.use(express.urlencoded({extended: true}))
+app.use(express.json()); // Used to parse JSON bodies
+app.use(express.urlencoded({ extended: true })) // for form data
+app.use(express.static('public'));
 
-// sanitize request
+// security
 app.use(xss());
-app.use(mongoSanitize());
-
-// cross origin enable
-
 app.use(cors());
 app.options('*', cors);
+app.use(helmet());
 
-//jwt auth
+//set default view engine
 
-app.use(passport.initialize());
-passport.use('jwt', jwtStrategy);
+app.set('view engine', 'ejs');
+
+app.use((req, res, next) => {
+    res.locals.message = req.session?.message;
+    if (req.session) delete req.session.message;
+    next();
+});
+
+//default route for image storage
 
 app.use('/v1', routes);
 
 //handle 404
 app.use((req,res,next) => {
-   // TODO: add handler
+   // TODO: add handler for routes not found
 })
+
 
 module.exports = app;
