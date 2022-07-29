@@ -3,7 +3,6 @@ const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
 const categoryRoute = require("./category.route");
 const productRoute = require("./product.route");
-const googleRoute = require("./google.route");
 const router = express.Router();
 
 const defaultRoutes = [
@@ -22,10 +21,6 @@ const defaultRoutes = [
   {
     path: "/api/product",
     route: productRoute,
-  },
-  {
-    path: "/api/sessions/oauth/google",
-    route: googleRoute,
   },
 ];
 

@@ -12,13 +12,13 @@ const googleOauthHandler = async (req, res) => {
   try {
     // get the id and access token with the code
     const { id_token, access_token } = await getGoogleOAuthTokens({ code });
-    console.log({ id_token, access_token });
+    console.log("token", { id_token, access_token });
 
     // get user with tokens
     const googleUser = await getGoogleUser({ id_token, access_token });
     //jwt.decode(id_token);
 
-    console.log({ googleUser });
+    console.log("google", { googleUser });
 
     if (!googleUser.verified_email) {
       return res.status(403).send("Google account is not verified");
@@ -41,20 +41,19 @@ const googleOauthHandler = async (req, res) => {
     );
 
     // create a session
-    // create a session
     const session = await createSession(user._id, req.get("user-agent") || "");
 
     // create an access token
 
     const accessToken = signJwt(
       { ...user.toJSON(), session: session._id },
-      { expiresIn: config.get("accessTokenTtl") }, // 15 minutes
+      { expiresIn: process.env.JWT_ACCESS_EXPIRATION_MINUTES },
     );
 
     // create a refresh token
     const refreshToken = signJwt(
       { ...user.toJSON(), session: session._id },
-      { expiresIn: config.get("refreshTokenTtl") }, // 1 year
+      { expiresIn: process.env.JWT_REFRESH_EXPIRATION_DAYS },
     );
 
     // set cookies
@@ -63,10 +62,9 @@ const googleOauthHandler = async (req, res) => {
     res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
     // redirect back to client
-    res.redirect(config.get("origin"));
+    res.redirect(process.env.CLIENT_URL);
   } catch (error) {
-    log.error(error, "Failed to authorize Google user");
-    return res.redirect(`${config.get("origin")}/oauth/error`);
+    return res.redirect(`${process.env.CLIENT_URL}/oauth/error`);
   }
 };
 

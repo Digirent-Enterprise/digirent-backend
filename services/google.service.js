@@ -13,38 +13,30 @@ const getGoogleOAuthTokens = async (code) => {
   };
 
   try {
-    const res =
-      (await axios.post) <
-      GoogleTokensResult >
-      (url,
-      qs.stringify(values),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
+    const res = await axios.post(url, qs.stringify(values), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
     return res.data;
   } catch (error) {
     console.error(error.response.data.error);
-    log.error(error, "Failed to fetch Google Oauth Tokens");
     throw new Error(error.message);
   }
 };
 
 const getGoogleUser = async (id_token, access_token) => {
   try {
-    const res =
-      (await axios.get) <
-      GoogleUserResult >
-      (`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+    const res = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
       {
         headers: {
           Authorization: `Bearer ${id_token}`,
         },
-      });
+      },
+    );
     return res.data;
   } catch (error) {
-    log.error(error, "Error fetching Google user");
     throw new Error(error.message);
   }
 };
