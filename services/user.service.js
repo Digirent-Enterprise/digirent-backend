@@ -21,7 +21,6 @@ const createUser = async (name, email, password, role, isEmailVerified, token=''
 }
 
 const deleteUser = async (email) => {
-    console.log('email', email)
     const user = await User.findOneAndDelete({email});
     if (!user) return false
     return user;
@@ -29,12 +28,16 @@ const deleteUser = async (email) => {
 
 
 const findUserByEmail = async (email) => {
-    return User.findOne({email})
+    const user = await User.findOne({email}).select('-password').select('-token')
+    console.log('user', user)
+    if (!user) return false;
+    return user
 }
 
 
 module.exports = {
     updateUser,
     createUser,
-    deleteUser
+    deleteUser,
+    findUserByEmail
 }
