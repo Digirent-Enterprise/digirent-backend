@@ -8,6 +8,17 @@ const deleteUser = async (req, res ) =>  {
     return res.status(200).send(user);
 }
 
+const getUserDetail = async (req, res) => {
+    const {user} = req;
+    if (user) {
+       const found = await UserService.findUserByEmail(user.email);
+       if (!found) return res.sendStatus(404);
+       return res.json(found);
+    }
+    return res.sendStatus(403);
+}
+
 module.exports = {
-    deleteUser
+    deleteUser,
+    getUserDetail
 }
