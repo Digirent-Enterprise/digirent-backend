@@ -6,5 +6,5 @@ router.post('/register', async (req, res) => authController.register(req, res));
 router.post('/login', async (req, res) => authController.login(req, res));
 router.post('/refresh-tokens',  authenticateToken, async (req, res) => authController.refreshTokens(req, res))
 router.post('/logout',  authenticateToken, async (req, res) => authController.logout(req, res))
-
+// router.get('/forget-password', )
 module.exports = router;
