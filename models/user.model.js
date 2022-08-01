@@ -26,6 +26,7 @@ const userSchema = mongoose.Schema(
                 }
             },
             private: true, // used by the toJSON plugin
+            selected: false
         },
 
         role: {
@@ -39,7 +40,8 @@ const userSchema = mongoose.Schema(
         },
 
         token: {
-            type: String
+            type: String,
+            selected: false
         },
 
         phone: {
