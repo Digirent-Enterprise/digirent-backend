@@ -57,6 +57,14 @@ const refreshTokens = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
+    const {email} = req.body; 
+    if (!email) return res.sendStatus(404);
+    const found = UserService.findUserByEmail(email);
+    if (!found) return res.sendStatus(404);
+    const resetPasswordToken = TokenService.generateResetPasswordToken(email);
+    return res.status(200).json({
+        resetPasswordToken,
+    })
 
 });
 

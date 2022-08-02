@@ -36,13 +36,11 @@ const findUserByToken = async (token) => {
     return User.findOne({token});
 }
 
-
-
 const refreshAuth = async (refreshToken) => {
-
+    
 };
 
-const resetPassword = async (resetPasswordToken, newPassword) => {
+const resetPassword = async (email) => {
 
 };
 
