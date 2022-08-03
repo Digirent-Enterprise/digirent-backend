@@ -1,17 +1,53 @@
-const {MessageClient} = require('cloudmailin');
+const nodemailer = require('nodemailer');
+const {google} = require('googleapis');
+const {forgetPasswordContent} = require("../constant/email-content");
+const OAuth2 = google.auth.OAuth2;
 
-const client = new MessageClient({ username: '0db1b2f948c506de', apiKey: 'kdj2RC8u6aSgE7WgYauSFt8J'});
+
+const OAuth2Client = new OAuth2(process.env.GOOGLE_API_CLIENT_ID, process.env.GOOGLE_API_CLIENT_SECRET)
+
+OAuth2Client.setCredentials({refresh_token: process.env.GOOGLE_API_CLIENT_REFRESH_TOKEN});
+
+const sendEmail = async (receiver, token) => {
+    let accessToken  = '';
+
+    accessToken = await OAuth2Client.getAccessToken().catch(async (e) => {
+        if (e) {
+            await OAuth2Client.refreshAccessToken()
+            accessToken = OAuth2Client.getAccessToken();
+        }
+    });
+    const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: process.env.MAIL_USER,
+            clientId: process.env.GOOGLE_API_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_API_CLIENT_SECRET,
+            refreshToken: process.env.GOOGLE_API_CLIENT_REFRESH_TOKEN,
+            accessToken
+        }
+    })
+
+    const link = `${process.env.FE_DEV_URI}/forget-password?token=${token}`;
+
+    const mailOptions = {
+        from: `RMIT DIGIRENT ADMIN ${process.env.MAIL_USER}`,
+        to: receiver,
+        subject: 'Reset password request at RMIT Digirent',
+        text: forgetPasswordContent(receiver, link)
+    }
 
 
-const mailOptions = {
-    from: '7f4a11bcdac6941cd1e0@cloudmailin.net',
-    to: 'vogiabao292@gmail.com',
-    plain: 'test message',
-    html:  '<h1>Test Message</h1>',
-    subject: "hello world",
+    transport.sendMail(mailOptions, (err, result) => {
+        if (err){
+            console.log('Error when sent email ', err)
+        } else {
+            console.log('Success: ', result)
+        }
+        transport.close()
+    })
 }
-
-const sendEmail = async () => await client.sendMessage(mailOptions);
 
 
 module.exports = {

@@ -32,6 +32,12 @@ const loginUserWithEmailAndPassword = async (user) => {
     }
 };
 
+const changeUserPassword = async (email, password) => {
+    const update = User.findOneAndUpdate({email}, {password})
+    if (!update) return false;
+    return update
+}
+
 const findUserByToken = async (token) => {
     return User.findOne({token});
 }
@@ -59,5 +65,6 @@ module.exports = {
     encryptPassword,
     decryptPassword,
     findUserByToken,
-    logout
+    logout,
+    changeUserPassword
 };

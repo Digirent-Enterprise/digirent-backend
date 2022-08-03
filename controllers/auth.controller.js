@@ -1,5 +1,5 @@
 const catchAsync = require('../utils/catchAsync');
-const {AuthService, UserService, TokenService} = require('../services');
+const {AuthService, UserService, TokenService, EmailService} = require('../services');
 const bcrypt = require('bcryptjs')
 
 const register = catchAsync(async (req, res) => {
@@ -56,11 +56,34 @@ const refreshTokens = catchAsync(async (req, res) => {
     return res.json(newAccessToken)
 });
 
-const forgotPassword = catchAsync(async (req, res) => {
+const requestForgetPassword = async (req, res) => {
+    const {email} = req.body;
+    if (!email) {
+        return res.status(401).send("Email cannot be empty");
+    }
+    const found = await UserService.findUserByEmail(email);
+    if (!found) return res.status(404).send('User not found');
+    const forgetPasswordToken = await TokenService.generateForgotPasswordToken(email);
+    await EmailService.sendEmail(email, forgetPasswordToken);
+    return res.status(200).send(`An email has been sent to ${email}`)
+}
 
+const verifyForgotPasswordRequest = catchAsync(async (req, res) => {
+    const {email} = req;
+    if (email) res.status(200).json({email});
+    res.sendStatus(401);
 });
 
 const resetPassword = catchAsync(async (req, res) => {
+    const {email, oldPassword , newPassword} = req.body;
+    const found = await AuthService.findUser(email);
+    if (!found) return res.sendStatus(404);
+    if (bcrypt.compare(oldPassword, found.password)) {
+        const encodedPassword = await AuthService.encryptPassword(newPassword);
+        const response = await AuthService.changeUserPassword(email, encodedPassword);
+        return res.status(200).json(response);
+    }
+    return res.status(401).send("Password is not correct");
 
 });
 
@@ -69,6 +92,7 @@ module.exports = {
     login,
     logout,
     refreshTokens,
-    forgotPassword,
     resetPassword,
+    requestForgetPassword,
+    verifyForgotPasswordRequest
 };
