@@ -18,7 +18,14 @@ const getUserDetail = async (req, res) => {
     return res.sendStatus(403);
 }
 
+const getUsers = async (req, res) => {
+    const users = await UserService.getAllUser();
+    if (!users) return res.sendStatus(404);
+    return res.status(200).json(users);
+}
+
 module.exports = {
     deleteUser,
-    getUserDetail
+    getUserDetail,
+    getUsers
 }

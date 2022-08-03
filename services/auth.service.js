@@ -14,7 +14,7 @@ const decryptPassword = async (password) => {
 
 
 const findUser = async (email) => {
-    return  User.findOne(email);
+    return  await User.findOne({email});
 }
 
 const logout = async(email) => {
@@ -33,7 +33,7 @@ const loginUserWithEmailAndPassword = async (user) => {
 };
 
 const changeUserPassword = async (email, password) => {
-    const update = User.findOneAndUpdate({email}, {password})
+    const update = User.findOneAndUpdate({email}, {password}).select('-password').select('-token')
     if (!update) return false;
     return update
 }

@@ -34,10 +34,17 @@ const findUserByEmail = async (email) => {
     return user
 }
 
+const getAllUser = async () => {
+    const users = await User.find().select('-password').select('-token');
+    if (!users) return false;
+    return users;
+}
+
 
 module.exports = {
     updateUser,
     createUser,
     deleteUser,
-    findUserByEmail
+    findUserByEmail,
+    getAllUser
 }
