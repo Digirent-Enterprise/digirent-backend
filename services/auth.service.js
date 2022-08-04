@@ -14,7 +14,7 @@ const decryptPassword = async (password) => {
 
 
 const findUser = async (email) => {
-    return  User.findOne(email);
+    return  await User.findOne({email});
 }
 
 const logout = async(email) => {
@@ -31,6 +31,12 @@ const loginUserWithEmailAndPassword = async (user) => {
         accessToken, refreshToken
     }
 };
+
+const changeUserPassword = async (email, password) => {
+    const update = User.findOneAndUpdate({email}, {password}).select('-password').select('-token')
+    if (!update) return false;
+    return update
+}
 
 const findUserByToken = async (token) => {
     return User.findOne({token});
@@ -59,5 +65,6 @@ module.exports = {
     encryptPassword,
     decryptPassword,
     findUserByToken,
-    logout
+    logout,
+    changeUserPassword
 };
