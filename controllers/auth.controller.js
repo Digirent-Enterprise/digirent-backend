@@ -8,7 +8,7 @@ const register = catchAsync(async (req, res) => {
         res.status(400).send("All input is required");
     }
 
-    const user = await AuthService.findUser({email});
+    const user = await AuthService.findUser(email);
     if (user) {
         return res.status(400).send("User Already Exist");
     }

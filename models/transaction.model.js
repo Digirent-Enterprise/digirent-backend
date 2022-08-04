@@ -37,6 +37,8 @@ const Transaction = new mongoose.Schema({
     },
     to: {
         type: Date,
+        default: (new Date()).setDate((new Date()).getDate() + 1)
+
     }
 });
 
