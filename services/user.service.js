@@ -29,7 +29,6 @@ const deleteUser = async (email) => {
 
 const findUserByEmail = async (email) => {
     const user = await User.findOne({email}).select('-password').select('-token')
-    console.log('user', user)
     if (!user) return false;
     return user
 }
