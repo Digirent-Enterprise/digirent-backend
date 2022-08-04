@@ -38,9 +38,9 @@ const login = catchAsync(async (req, res) => {
 });
 
 const logout = catchAsync(async (req, res) => {
-    const {email} = req.body;
+    const {email} = req.user;
     const user = await AuthService.logout(email);
-    if (!user) return res.status(404).send('Something\'s wrong.cannot delete this user!')
+    if (!user) return res.status(404).send('Something\'s wrong.cannot logout this user!')
     return res.status(200).send("logout successfully. Refresh token has been revoked.");
 });
 
