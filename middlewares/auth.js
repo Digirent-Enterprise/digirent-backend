@@ -29,7 +29,9 @@ const authenticateResetPasswordToken = async(req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) res.sendStatus(401);
     jwt.verify(token, process.env.JWT_FORGET_PASSWORD_SECRET, (err, user)=> {
+        if (err) console.log('err ', err)
         if (err) return res.sendStatus(403);
+
         req.email = user.email;
         next()
     });
