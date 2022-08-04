@@ -31,6 +31,10 @@ app.use((req, res, next) => {
 
 app.use('/v1', routes);
 
+app.get('/', (req, res) => {
+    res.send ("hello to digirent backend")
+})
+
 //handle 404
 app.use((req,res,next) => {
    // TODO: add handler for routes not found
