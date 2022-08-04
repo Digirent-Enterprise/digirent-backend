@@ -24,7 +24,7 @@ const defaultRoutes = [
         route: productRoute
     },
     {
-        path: '/api/transactions',
+        path: '/api/transaction',
         route: transactionRoute
     }
 ];
