@@ -10,8 +10,7 @@ const productSchema = new mongoose.Schema({
         required: true,
     },
     category: {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        type:  String,
     },
     brand: {
         type: String,
@@ -35,7 +34,7 @@ const productSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean, //true: available
-        required: true,
+        default: true
     },
     created: {
         type: Date,

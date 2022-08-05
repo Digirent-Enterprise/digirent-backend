@@ -17,6 +17,7 @@ const productController = {
                 status: req.body.status,
                 serial: req.body.serial,
             });
+            console.log('new product', newProduct)
             if(files){
                 req.files.forEach(function(file, index, arr){
                     let path = file.path + ','
@@ -25,13 +26,13 @@ const productController = {
                 })
             }
 
-            const savedProduct = await newProduct.save();
+            const savedProduct = await newProduct.save().catch(e => console.log(e));
             if(req.body.category){
                 // const category = Category.findById(req.body.category);
                 const category = Category.findById(req.body.category);
                 await category.updateOne({$push: {products: savedProduct._id}});
             }
-            res.status(200).json(savedProduct);
+            return res.status(200).json(savedProduct);
 
         } catch(err){
             res.status(500).json(err);
@@ -62,7 +63,6 @@ const productController = {
     updateProduct: async(req, res) => {
         try{
             const product = await Product.findOneAndUpdate({_id: req.body.id}, {...req.body});
-            console.log('new product', product)
             res.status(200).json('Update successfully!');
         } catch(err){
             res.status(500).json(err);
