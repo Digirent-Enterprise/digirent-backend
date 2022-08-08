@@ -20,7 +20,6 @@ const userSchema = mongoose.Schema(
       trim: true,
       minlength: 8,
       validate(value) {
-        console.log("valiueeee", value);
         if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
           throw new Error(
             "Password must contain at least one letter and one number",
@@ -36,9 +35,8 @@ const userSchema = mongoose.Schema(
       default: "user",
     },
 
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
+    avatar: {
+      type: String,
     },
 
     token: {
