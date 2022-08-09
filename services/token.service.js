@@ -30,8 +30,11 @@ const generateAuthTokens = async (user) => {
 };
 
 
-const generateResetPasswordToken = async (email) => {
-
+const generateForgotPasswordToken = async (email) => {
+    return await jwt.sign({ email }, process.env.JWT_FORGET_PASSWORD_SECRET,
+        {
+            expiresIn: process.env.JWT_FORGET_PASSWORD_EXPIRED_TIME,
+        }, {});
 };
 
 
@@ -44,6 +47,6 @@ module.exports = {
     generateRefreshToken,
     verifyToken,
     generateAuthTokens,
-    generateResetPasswordToken,
+    generateForgotPasswordToken,
     generateVerifyEmailToken,
 };

@@ -1,14 +1,13 @@
 {
-  "name": "create-nodejs-express-app",
+  "name": "digirent-backend",
   "version": "1.0.0",
-  "description": "Create a Node.js app for building production-ready RESTful APIs using Express, by running one command",
-  "bin": "bin/createNodejsApp.js",
-  "main": "src/index.js",
-  "repository": "https://github.com/hagopj13/node-express-boilerplate.git",
-  "author": "Hagop Jamkojian <hagopj13@gmail.com>",
+  "description": "Backend for Digirent project",
+  "main": "index.js",
+  "repository": "https://github.com/Digirent-Enterprise/digirent-backend.git",
+  "author": "Digirent",
   "license": "MIT",
   "engines": {
-    "node": ">=12.0.0"
+    "node": "14.x"
   },
   "scripts": {
     "start": "nodemon index.js",
@@ -79,8 +78,6 @@
     "path": "^0.12.7",
     "pm2": "^5.1.0",
     "streamifier": "^0.1.1",
-    "swagger-jsdoc": "^6.0.8",
-    "swagger-ui-express": "^4.1.6",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1"
@@ -94,7 +91,6 @@
     "eslint-plugin-jest": "^24.0.1",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-security": "^1.4.0",
-    "faker": "^5.1.0",
     "husky": "^7.0.0",
     "jest": "^26.0.1",
     "lint-staged": "^11.0.0",
