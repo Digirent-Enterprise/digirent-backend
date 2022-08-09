@@ -39,32 +39,33 @@ const createUser = async (
 };
 
 const deleteUser = async (email) => {
-    const user = await User.findOneAndDelete({email});
-    if (!user) return false
-    return user;
-}
-
+  const user = await User.findOneAndDelete({ email });
+  if (!user) return false;
+  return user;
+};
 
 const findUserByEmail = async (email) => {
-    const user = await User.findOne({email}).select('-password').select('-token')
-    if (!user) return false;
-    return user
-}
+  const user = await User.findOne({ email })
+    .select("-password")
+    .select("-token");
+  if (!user) return false;
+  return user;
+};
 
 const getAllUser = async () => {
-    const users = await User.find().select('-password').select('-token');
-    if (!users) return false;
-    return users;
-}
+  const users = await User.find().select("-password").select("-token");
+  if (!users) return false;
+  return users;
+};
 
 const findAndUpdateUser = async (query, update, options) => {
   return User.findOneAndUpdate(query, update, options);
 };
 
 module.exports = {
-    updateUser,
-    createUser,
-    deleteUser,
-    findUserByEmail,
-    getAllUser
-}
+  updateUser,
+  createUser,
+  deleteUser,
+  findUserByEmail,
+  getAllUser,
+};

@@ -1,7 +1,7 @@
 const objectValidator = (obj) => {
-    return obj && Object.keys(obj).length
-}
+  return obj && Object.keys(obj).length;
+};
 
 module.exports = {
-    ObjectValidator: objectValidator
-}
+  ObjectValidator: objectValidator,
+};
