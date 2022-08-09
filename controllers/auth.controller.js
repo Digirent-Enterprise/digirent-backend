@@ -13,16 +13,24 @@ const register = catchAsync(async (req, res) => {
         return res.status(400).send("User Already Exist");
     }
 
-    if (pw1.toLowerCase() !== pw2.toLowerCase()) {
-        return res.status(400).send("Password doest not match");
-    }
-    const encryptedPassword = await AuthService.encryptPassword(pw1);
-    const currentTime = (new Date()).toLocaleDateString()
-    await UserService.createUser(name, email, encryptedPassword, 'user', false, '', phone, currentTime);
+  if (pw1.toLowerCase() !== pw2.toLowerCase()) {
+    return res.status(400).send("Password doest not match");
+  }
+  const encryptedPassword = await AuthService.encryptPassword(pw1);
+  const currentTime = new Date().toLocaleDateString();
+  await UserService.createUser(
+    name,
+    email,
+    encryptedPassword,
+    "user",
+    false,
+    "",
+    phone,
+    currentTime,
+  );
 
-    return res.sendStatus(201)
+  return res.sendStatus(201);
 });
-
 
 const login = catchAsync(async (req, res) => {
     const {email, password} = req.body;
@@ -45,15 +53,15 @@ const logout = catchAsync(async (req, res) => {
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
-    const {refreshToken} = req.body;
-    if (!refreshToken) return res.sendStatus(401);
-    const found = await AuthService.findUserByToken(refreshToken);
-    if (!found) return res.sendStatus(401);
-    const newAccessToken = await TokenService.verifyToken(refreshToken);
-    if (!newAccessToken) {
-        return res.send(403)
-    }
-    return res.json(newAccessToken)
+  const { refreshToken } = req.body;
+  if (!refreshToken) return res.sendStatus(401);
+  const found = await AuthService.findUserByToken(refreshToken);
+  if (!found) return res.sendStatus(401);
+  const newAccessToken = await TokenService.verifyToken(refreshToken);
+  if (!newAccessToken) {
+    return res.send(403);
+  }
+  return res.json(newAccessToken);
 });
 
 const requestForgetPassword = async (req, res) => {

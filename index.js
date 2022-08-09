@@ -1,9 +1,8 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const mongoose = require('mongoose');
-const app = require('./app');
-const {sendEmail} = require("./services/email.service");
-
+const mongoose = require("mongoose");
+const app = require("./app");
+const { sendEmail } = require("./services/email.service");
 
 let server;
 
