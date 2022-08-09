@@ -1,44 +1,25 @@
-const qs = require("qs");
-const axios = require("axios");
+const { google } = require("googleapis");
 
-const getGoogleOAuthTokens = async (code) => {
-  const url = "https://oauth2.googleapis.com/token";
+const GOOGLE_OAUTH_CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID;
+const GOOGLE_OAUTH_CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+const GOOGLE_OAUTH_REDIRECT_URL = process.env.GOOGLE_OAUTH_REDIRECT_URL;
 
-  const values = {
-    code,
-    client_id: process.env.GOOGLE_CLIENT_ID,
-    client_secret: process.env.GOOGLE_CLIENT_SECRET,
-    redirect_uri: process.env.GOOGLE_REDIRECT_URI,
-    grant_type: "authorization_code",
-  };
+const OAuth2Client = new google.auth.OAuth2(
+  GOOGLE_OAUTH_CLIENT_ID,
+  GOOGLE_OAUTH_CLIENT_SECRET,
+  GOOGLE_OAUTH_REDIRECT_URL,
+);
 
-  try {
-    const res = await axios.post(url, qs.stringify(values), {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.error(error.response.data.error);
-    throw new Error(error.message);
-  }
-};
+const scopes = [
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
+];
 
-const getGoogleUser = async (id_token, access_token) => {
-  try {
-    const res = await axios.get(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
-      {
-        headers: {
-          Authorization: `Bearer ${id_token}`,
-        },
-      },
-    );
-    return res.data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+const url = OAuth2Client.generateAuthUrl({
+  // 'online' (default) or 'offline' (gets refresh_token)
+  access_type: "offline",
 
-module.exports = { getGoogleOAuthTokens, getGoogleUser };
+  scope: scopes,
+});
+
+module.exports = url;
