@@ -1,22 +1,42 @@
-const cloudinary = require("cloudinary").v2;
-const dotenv = require("dotenv");
-
-dotenv.config();
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
 });
-const cloudinaryImageUploadMethod = async (file, folder) => {
-  return new Promise((resolve) => {
-    cloudinary.uploader.upload(file, (err, res) => {
-      if (err) return res.status(500).send("upload image error");
-      resolve({
-        res: res.secure_url,
-      });
+
+const streamUpload = (file) => {
+    return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream((error, result) => {
+            if (result) {
+                resolve(result);
+            } else {
+                reject(error);
+            }
+        });
+        streamifier.createReadStream(file.buffer).pipe(stream);
     });
-  });
 };
 
-module.exports = { cloudinary, cloudinaryImageUploadMethod };
+const uploadSingleFile = async (file) => {
+    return await streamUpload(file);
+}
+
+const uploadMultipleFiles = async (files) => {
+    let urls = [];
+    if (files.length) {
+        for (let file of files) {
+            const urlObject = await uploadSingleFile(file);
+            if (urlObject) urls.push(urlObject.url);
+        }
+    }
+    return urls;
+}
+
+module.exports = {
+    uploadMultipleFiles,
+    uploadSingleFile
+}

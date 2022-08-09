@@ -62,7 +62,6 @@
     "express-session": "^1.17.3",
     "expressjs": "^1.0.1",
     "fs": "^0.0.1-security",
-    "googleapis": "^105.0.0",
     "helmet": "^4.1.0",
     "http-status": "^1.4.0",
     "joi": "^17.3.0",
@@ -78,7 +77,9 @@
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
     "pm2": "^5.1.0",
+    "streamifier": "^0.1.1",
     "validator": "^13.0.0",
+    "winston": "^3.2.1",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
