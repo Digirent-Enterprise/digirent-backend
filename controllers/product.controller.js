@@ -5,7 +5,7 @@ const { CloudinaryService } = require("../services");
 const productController = {
   //add product
   addProduct: async (req, res) => {
-    const files = req.files;
+    console.log(req.body)
     try {
       // const newProduct = new Product(req.body);
       const newProduct = new Product({
@@ -19,9 +19,6 @@ const productController = {
         status: req.body.status,
         serial: req.body.serial,
       });
-      if (files) {
-        newProduct.images = await uploadMultipleFiles(files);
-      }
       const savedProduct = await newProduct.save();
       if (req.body.category) {
         // const category = Category.findById(req.body.category);
