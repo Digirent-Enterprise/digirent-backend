@@ -1,7 +1,7 @@
-const catchAsync = require('./catchAsync');
-const ApiError = require('./ApiError');
+const catchAsync = require("./catchAsync");
+const ApiError = require("./ApiError");
 module.exports = {
-    catchAsync,
-    ApiError
-    //TODO: any format functions will be placed here
-}
+  catchAsync,
+  ApiError,
+  //TODO: any format functions will be placed here
+};
