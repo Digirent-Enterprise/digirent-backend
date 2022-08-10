@@ -15,20 +15,24 @@ const createUser = async (
   email,
   password,
   role,
-  isEmailVerified,
+  status,
+  location,
+  avatar,
   token = "",
   phone,
-  currentTime,
+  currentDate,
 ) => {
   const user = new User({
     name,
     email,
     password,
     role,
-    isEmailVerified,
+    status,
+    location,
+    avatar,
     token,
     phone,
-    currentTime,
+    currentDate,
   });
   try {
     await user.save();

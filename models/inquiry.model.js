@@ -15,7 +15,7 @@ const inquirySchema = new mongoose.Schema({
   inquiryDescription: {
     type: String,
   },
-  created: {
+  createdDate: {
     type: Date,
     required: true,
     default: Date.now,

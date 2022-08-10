@@ -22,16 +22,18 @@ const register = catchAsync(async (req, res) => {
     return res.status(400).send("Password doest not match");
   }
   const encryptedPassword = await AuthService.encryptPassword(pw1);
-  const currentTime = new Date().toLocaleDateString();
+  const currentDate = new Date().toLocaleDateString();
   await UserService.createUser(
     name,
     email,
     encryptedPassword,
     "user",
-    false,
+    true,
+    "Ho Chi Minh city",
+    "",
     "",
     phone,
-    currentTime,
+    currentDate,
   );
 
   return res.sendStatus(201);
