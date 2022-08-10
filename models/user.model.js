@@ -54,7 +54,7 @@ const userSchema = mongoose.Schema(
     },
     status: {
       type: Boolean, //true: active, false: disabled
-      required: true,
+      default: true,
     },
 
     createdDate: {
