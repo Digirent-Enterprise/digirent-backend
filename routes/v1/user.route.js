@@ -9,6 +9,10 @@ const router = express.Router();
 router.post("/delete-user", authenticateAdmin, (req, res) =>
   userController.deleteUser(req, res),
 );
+
+router.put("/change-status", authenticateToken, (req, res) =>
+  userController.changeUserStatus(req, res),
+);
 router.get("/user-detail", authenticateToken, (req, res) =>
   userController.getUserDetail(req, res),
 );

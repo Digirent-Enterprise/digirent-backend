@@ -63,7 +63,7 @@ const getAllUser = async () => {
 };
 
 const findAndUpdateUser = async (query, update, options) => {
-  return User.findOneAndUpdate(query, update, options);
+  return User.findOneAndUpdate({ _id: query }, update, options);
 };
 
 module.exports = {
@@ -72,4 +72,5 @@ module.exports = {
   deleteUser,
   findUserByEmail,
   getAllUser,
+  findAndUpdateUser,
 };

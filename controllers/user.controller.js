@@ -18,6 +18,21 @@ const getUserDetail = async (req, res) => {
   return res.sendStatus(403);
 };
 
+const changeUserStatus = async (req, res) => {
+  const update = {
+    status: req.body.status,
+  };
+  const id = req.user.user_id;
+
+  const updatedStatusUser = await UserService.findAndUpdateUser(id, update, {
+    new: true,
+  }).catch((error) => {
+    return res.status(500).send(error);
+  });
+
+  return res.status(200).send(updatedStatusUser);
+};
+
 const getUsers = async (req, res) => {
   const users = await UserService.getAllUser();
   if (!users) return res.sendStatus(404);
@@ -28,4 +43,5 @@ module.exports = {
   deleteUser,
   getUserDetail,
   getUsers,
+  changeUserStatus,
 };

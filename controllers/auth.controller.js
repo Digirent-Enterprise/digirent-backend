@@ -42,10 +42,14 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const found = await AuthService.findUser(email);
-  console.log("found pw", found.password);
   if (found) {
     if (await bcrypt.compare(password, found.password)) {
       const response = await AuthService.loginUserWithEmailAndPassword(found);
+      if (!response.status) {
+        return res.status(401).json({
+          err: "This account is deactivated. Please login with another account.",
+        });
+      }
       return res.status(200).json(response);
     }
   }
