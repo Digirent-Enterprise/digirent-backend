@@ -6,7 +6,7 @@ const { authenticateAdmin } = require("../../middlewares/auth");
 
 router.get("/", productController.getAllProducts);
 // add products
-router.post("/", upload, productController.addProduct);
+router.post("/", authenticateAdmin, productController.addProduct);
 router.get("/:id", productController.getProduct);
 router.put(
   "/update-product",
