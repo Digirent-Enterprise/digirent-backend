@@ -5,8 +5,6 @@ const cors = require("cors");
 const routes = require("./routes/v1");
 const bodyParser = require("body-parser");
 
-const googleOauthHandler = require("./controllers/google.controller");
-
 const app = express();
 // parse url encoded
 app.use(express.json()); // Used to parse JSON bodies
@@ -33,11 +31,9 @@ app.use((req, res, next) => {
 
 app.use("/v1", routes);
 
-app.get("/api/sessions/oauth/google", googleOauthHandler);
-
-app.get('/', (req, res) => {
-    res.send ("hello to digirent backend")
-})
+app.get("/", (req, res) => {
+  res.send("hello to digirent backend");
+});
 
 //handle 404
 app.use((req, res, next) => {

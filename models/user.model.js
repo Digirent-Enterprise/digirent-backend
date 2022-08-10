@@ -49,9 +49,18 @@ const userSchema = mongoose.Schema(
       trim: true,
       minlength: 9,
     },
+    location: {
+      type: String,
+    },
+    status: {
+      type: Boolean, //true: active, false: disabled
+      required: true,
+    },
 
     createdDate: {
       type: String,
+      required: true,
+      default: Date.now,
     },
   },
 
