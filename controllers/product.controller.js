@@ -5,7 +5,7 @@ const { CloudinaryService } = require("../services");
 const productController = {
   //add product
   addProduct: async (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
     try {
       // const newProduct = new Product(req.body);
       const newProduct = new Product({
