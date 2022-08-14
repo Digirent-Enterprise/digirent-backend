@@ -83,6 +83,8 @@ const requestForgetPassword = async (req, res) => {
   const forgetPasswordToken = await TokenService.generateForgotPasswordToken(
     email,
   );
+  console.log('emailemailemailemail', EmailService)
+
   await EmailService.sendEmail(email, forgetPasswordToken);
   return res.status(200).send(`An email has been sent to ${email}`);
 };

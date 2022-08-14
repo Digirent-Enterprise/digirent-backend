@@ -17,7 +17,8 @@ const sendEmail = async (receiver, token) => {
 
   accessToken = await OAuth2Client.getAccessToken().catch(async (e) => {
     if (e) {
-      await OAuth2Client.refreshAccessToken();
+      const refresh = await OAuth2Client.refreshAccessToken();
+      console.log('access token', refresh)
       accessToken = OAuth2Client.getAccessToken();
     }
   });
@@ -33,7 +34,7 @@ const sendEmail = async (receiver, token) => {
     },
   });
 
-  const link = `${process.env.FE_DEV_URI}/forget-password?token=${token}`;
+  const link = `${process.env.FE_DEV_URI}/change-forgot-password/${token}`;
 
   const mailOptions = {
     from: `RMIT DIGIRENT ADMIN ${process.env.MAIL_USER}`,
