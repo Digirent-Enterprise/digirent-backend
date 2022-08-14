@@ -23,7 +23,8 @@ const Transaction = new mongoose.Schema({
     required: true,
   },
   status: {
-    enum: ["pending", "deposited", "paid"],
+    type: String,
+    required: true
   },
   currency: {
     type: String,
