@@ -7,24 +7,17 @@ const productController = {
   addProduct: async (req, res) => {
     console.log(req.body)
     try {
-      // const newProduct = new Product(req.body);
       const newProduct = new Product({
         name: req.body.name,
-        category: req.body.category,
         brand: req.body.brand,
         description: req.body.description,
         images: req.body.images || [],
         rentalCost: req.body.rentalCost,
         rentalCostType: req.body.rentalCostType,
-        status: req.body.status,
+        status: req.body.status || true,
         serial: req.body.serial,
       });
       const savedProduct = await newProduct.save();
-      if (req.body.category) {
-        // const category = Category.findById(req.body.category);
-        const category = Category.findById(req.body.category);
-        await category.updateOne({ $push: { products: savedProduct._id } });
-      }
       res.status(200).json(savedProduct);
     } catch (err) {
       res.status(500).json(err);
@@ -79,10 +72,11 @@ const productController = {
   },
 
   uploadSingleImage: async (req, res) => {
+    console.log(req.files)
     const file = req.files[0];
     const urlObj = await CloudinaryService.uploadSingleFile(file);
     if (!urlObj) res.sendStatus(404);
-    return res.json({ url: urlObj.url });
+    return res.status(200).json({ url: urlObj.url });
   },
 };
 
