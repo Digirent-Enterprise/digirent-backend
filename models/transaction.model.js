@@ -24,12 +24,12 @@ const Transaction = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true
+    required: true,
   },
   currency: {
     type: String,
     required: true,
-    default: "VND",
+    default: "usd",
   },
   from: {
     type: Date,
@@ -40,6 +40,9 @@ const Transaction = new mongoose.Schema({
     type: Date,
     default: new Date().setDate(new Date().getDate() + 1),
   },
+  imageUrl: {
+    type: String;
+  }
 });
 
 let Product = mongoose.model("Transaction", Transaction, "transactions");
