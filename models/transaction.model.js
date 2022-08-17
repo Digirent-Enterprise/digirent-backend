@@ -41,8 +41,8 @@ const Transaction = new mongoose.Schema({
     default: new Date().setDate(new Date().getDate() + 1),
   },
   imageUrl: {
-    type: String;
-  }
+    type: String,
+  },
 });
 
 let Product = mongoose.model("Transaction", Transaction, "transactions");
