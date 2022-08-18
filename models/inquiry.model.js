@@ -10,7 +10,9 @@ const inquirySchema = new mongoose.Schema({
     required: true,
   },
   inquiryType: {
+    type: String,
     enum: ["Account", "Product", "Others"],
+    default: "Product"
   },
   inquiryDescription: {
     type: String,
@@ -22,6 +24,6 @@ const inquirySchema = new mongoose.Schema({
   },
 });
 
-let Inquiry = mongoose.model("Inquiry", inquirySchema);
+let Inquiry = mongoose.model("Inquiry", inquirySchema, 'inquiries');
 
 module.exports = Inquiry;

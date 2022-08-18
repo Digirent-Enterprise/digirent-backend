@@ -4,6 +4,7 @@ const userRoute = require("./user.route");
 const categoryRoute = require("./category.route");
 const productRoute = require("./product.route");
 const transactionRoute = require("./transaction.route");
+const inquiryRoute = require('./inquiry.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -27,6 +28,10 @@ const defaultRoutes = [
     path: "/api/transaction",
     route: transactionRoute,
   },
+  {
+    path: "/api/inquiry",
+    route: inquiryRoute
+  }
 ];
 
 defaultRoutes.forEach((route) => {
