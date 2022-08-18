@@ -18,4 +18,8 @@ router.get("/user-detail", authenticateToken, (req, res) =>
 router.get("/users", authenticateAdmin, (req, res) =>
   userController.getUsers(req, res),
 );
+
+router.put('/edit-user', authenticateToken, (req, res) =>
+    userController.updateUser(req, res));
+
 module.exports = router;

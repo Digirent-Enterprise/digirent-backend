@@ -26,7 +26,7 @@ const changeTransactionStatus = async (req, res) => {
   const { id } = req.query;
   const found = await TransactionService.changeTransactionStatus(id, req.body);
   if (!found) return res.sendStatus(404);
-  return res.json(found);
+  return res.status(200).send('change status successfully');
 };
 
 const getTransactionDetail = async (req, res) => {
