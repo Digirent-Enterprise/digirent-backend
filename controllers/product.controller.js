@@ -16,8 +16,10 @@ const productController = {
         rentalCostType: req.body.rentalCostType,
         status: req.body.status || true,
         serial: req.body.serial,
+        category: req.body.category || "Tablets and Cellphones"
       });
       const savedProduct = await newProduct.save();
+      await Category.findOneAndUpdate({name: req.body.category}, {$push: {products: savedProduct._id}}).catch(e => console.log(e))
       res.status(200).json(savedProduct);
     } catch (err) {
       res.status(500).json(err);
@@ -47,11 +49,10 @@ const productController = {
   // update product
   updateProduct: async (req, res) => {
     try {
-      const product = await Product.findById(req.params.id);
-      await product.updateOne({ $set: req.body });
-      res.status(200).json("Update successfully!");
+      const product = await Product.findOneAndUpdate({_id: req.body.id}, { $set: req.body });
+      return res.status(200).send('updated successfully');
     } catch (err) {
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   },
 

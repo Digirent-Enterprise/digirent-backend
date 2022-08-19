@@ -36,9 +36,9 @@ const getAllInquiries = async (req, res) => {
 
 const updateInquiry = async (req, res) => {
     const {id} = req.body
-    const updatedInquiry = InquiryService.updateInquiry(id, req.body);
+    const updatedInquiry = await InquiryService.updateInquiry(id, req.body);
     if (!updatedInquiry) return res.status(501).send("error when update inquiry");
-    return res.json(updatedInquiry);
+    return res.status(200).send('updated successfully');
 }
 
 module.exports = {

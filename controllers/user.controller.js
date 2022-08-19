@@ -39,9 +39,18 @@ const getUsers = async (req, res) => {
   return res.status(200).json(users);
 };
 
+const updateUser = async (req, res) => {
+  if (!req.user) return res.sendStatus(401);
+  const {user_id} = req.user;
+  const updated = await UserService.updateUser(user_id, req.body);
+  if (!updated) return res.status(501).send("Some fields are missing or user not found");
+  return res.json(updated);
+}
+
 module.exports = {
   deleteUser,
   getUserDetail,
   getUsers,
   changeUserStatus,
+  updateUser
 };
