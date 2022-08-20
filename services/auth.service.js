@@ -24,7 +24,7 @@ const logout = async (email) => {
 const loginUserWithEmailAndPassword = async (user) => {
   const accessToken = await TokenService.generateAccessToken(user);
   const refreshToken = await TokenService.generateRefreshToken(user);
-  await UserService.updateUser(user.email, refreshToken);
+  await UserService.updateUser(user._id, refreshToken);
   return {
     accessToken,
     refreshToken,
