@@ -45,11 +45,6 @@ const login = catchAsync(async (req, res) => {
   if (found) {
     if (await bcrypt.compare(password, found.password)) {
       const response = await AuthService.loginUserWithEmailAndPassword(found);
-      if (!response.status) {
-        return res.status(401).json({
-          err: "This account is deactivated. Please login with another account.",
-        });
-      }
       return res.status(200).json(response);
     }
   }
@@ -88,6 +83,8 @@ const requestForgetPassword = async (req, res) => {
   const forgetPasswordToken = await TokenService.generateForgotPasswordToken(
     email,
   );
+  console.log('emailemailemailemail', EmailService)
+
   await EmailService.sendEmail(email, forgetPasswordToken);
   return res.status(200).send(`An email has been sent to ${email}`);
 };

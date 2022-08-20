@@ -9,7 +9,6 @@ const getAllTransaction = async (req, res) => {
 
 const getTransactionByUserEmail = async (req, res) => {
   const { user } = req;
-  console.log("user", user);
   if (!user) return res.sendStatus(401);
   const found = await TransactionService.getTransactionByUserEmail(user.email);
   if (!found) return res.sendStatus(404);
@@ -27,7 +26,7 @@ const changeTransactionStatus = async (req, res) => {
   const { id } = req.query;
   const found = await TransactionService.changeTransactionStatus(id, req.body);
   if (!found) return res.sendStatus(404);
-  return res.json(found);
+  return res.status(200).send('change status successfully');
 };
 
 const getTransactionDetail = async (req, res) => {

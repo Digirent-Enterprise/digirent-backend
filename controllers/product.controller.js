@@ -5,26 +5,21 @@ const { CloudinaryService } = require("../services");
 const productController = {
   //add product
   addProduct: async (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
     try {
-      // const newProduct = new Product(req.body);
       const newProduct = new Product({
         name: req.body.name,
-        category: req.body.category,
         brand: req.body.brand,
         description: req.body.description,
         images: req.body.images || [],
         rentalCost: req.body.rentalCost,
         rentalCostType: req.body.rentalCostType,
-        status: req.body.status,
+        status: req.body.status || true,
         serial: req.body.serial,
+        category: req.body.category || "Tablets and Cellphones"
       });
       const savedProduct = await newProduct.save();
-      if (req.body.category) {
-        // const category = Category.findById(req.body.category);
-        const category = Category.findById(req.body.category);
-        await category.updateOne({ $push: { products: savedProduct._id } });
-      }
+      await Category.findOneAndUpdate({name: req.body.category}, {$push: {products: savedProduct._id}}).catch(e => console.log(e))
       res.status(200).json(savedProduct);
     } catch (err) {
       res.status(500).json(err);
@@ -44,9 +39,7 @@ const productController = {
   //get product
   getProduct: async (req, res) => {
     try {
-      const product = await Product.findById(req.params.id).populate(
-        "category",
-      );
+      const product = await Product.findById(req.params.id)
       res.status(200).json(product);
     } catch (err) {
       res.status(500).json(err);
@@ -56,11 +49,10 @@ const productController = {
   // update product
   updateProduct: async (req, res) => {
     try {
-      const product = await Product.findById(req.params.id);
-      await product.updateOne({ $set: req.body });
-      res.status(200).json("Update successfully!");
+      const product = await Product.findOneAndUpdate({_id: req.body.id}, { $set: req.body });
+      return res.status(200).send('updated successfully');
     } catch (err) {
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   },
 
@@ -79,10 +71,11 @@ const productController = {
   },
 
   uploadSingleImage: async (req, res) => {
+    console.log(req.files)
     const file = req.files[0];
     const urlObj = await CloudinaryService.uploadSingleFile(file);
     if (!urlObj) res.sendStatus(404);
-    return res.json({ url: urlObj.url });
+    return res.status(200).json({ url: urlObj.url });
   },
 };
 

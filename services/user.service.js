@@ -1,15 +1,5 @@
 const User = require("../models/user.model");
 
-const updateUser = async (email, token) => {
-  let newUser;
-  try {
-    newUser = await User.findOneAndUpdate({ email }, { token });
-  } catch (e) {
-    console.log("Error: ", e);
-  }
-  return newUser;
-};
-
 const createUser = async (
   name,
   email,
@@ -65,6 +55,12 @@ const getAllUser = async () => {
 const findAndUpdateUser = async (query, update, options) => {
   return User.findOneAndUpdate({ _id: query }, update, options);
 };
+
+const updateUser = async(id, data) => {
+  const updatedUser = await User.findOneAndUpdate({_id: id}, {$set: data}).select('-_id').select('-password').select('-token');
+  if (!updatedUser) return false;
+  return updatedUser;
+}
 
 module.exports = {
   updateUser,

@@ -9,10 +9,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
-  },
   brand: {
     type: String,
     required: true,
@@ -44,6 +40,10 @@ const productSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
+  category: {
+    type: String,
+    default: "Tablets and Cellphones"
+  }
 });
 
 let Product = mongoose.model("Product", productSchema);

@@ -62,6 +62,9 @@ const userSchema = mongoose.Schema(
       required: true,
       default: Date.now,
     },
+    profileImage: {
+        type: String
+    }
   },
 
   { typeKey: "type" },
