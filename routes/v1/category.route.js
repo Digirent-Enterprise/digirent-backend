@@ -6,6 +6,6 @@ const { authenticateAdmin } = require("../../middlewares/auth");
 // add category
 router.post("/", authenticateAdmin, categoryController.addCategory);
 router.get("/", categoryController.getAllCategories);
-router.get("/:name", categoryController.getCategory);
+router.get("/get-category-products", categoryController.getCategory);
 
 module.exports = router;

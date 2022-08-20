@@ -42,7 +42,6 @@ const Transaction = new mongoose.Schema({
   },
   productImageUrl: {
     type: String,
-    required: true
   }
 });
 

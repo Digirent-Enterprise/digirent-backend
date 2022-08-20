@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const generateAccessToken = async (user) => {
+    console.log('userrrrrrrrrrrrrrrrrrrrr', user._id)
   return await jwt.sign(
     { user_id: user._id, email: user.email, name: user.name, role: user.role },
     process.env.JWT_ACCESS_TOKEN_SECRET,

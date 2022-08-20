@@ -42,6 +42,7 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const found = await AuthService.findUser(email);
+  console.log(found)
   if (found) {
     if (await bcrypt.compare(password, found.password)) {
       const response = await AuthService.loginUserWithEmailAndPassword(found);
@@ -83,7 +84,6 @@ const requestForgetPassword = async (req, res) => {
   const forgetPasswordToken = await TokenService.generateForgotPasswordToken(
     email,
   );
-  console.log('emailemailemailemail', EmailService)
 
   await EmailService.sendEmail(email, forgetPasswordToken);
   return res.status(200).send(`An email has been sent to ${email}`);
