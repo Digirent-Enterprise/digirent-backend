@@ -24,12 +24,12 @@ const Transaction = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true
+    required: true,
   },
   currency: {
     type: String,
     required: true,
-    default: "VND",
+    default: "usd",
   },
   from: {
     type: Date,

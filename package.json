@@ -78,6 +78,7 @@
     "path": "^0.12.7",
     "pm2": "^5.1.0",
     "streamifier": "^0.1.1",
+    "stripe": "^10.2.0",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
     "xss-clean": "^0.1.1"

@@ -16,7 +16,7 @@ const productController = {
         rentalCostType: req.body.rentalCostType,
         status: req.body.status || true,
         serial: req.body.serial,
-        category: req.body.category || "Tablets and Cellphones"
+        category: req.body.category,
       });
       const savedProduct = await newProduct.save();
       await Category.findOneAndUpdate({name: req.body.category}, {$push: {products: savedProduct._id}}).catch(e => console.log(e))
