@@ -35,10 +35,6 @@ const userSchema = mongoose.Schema(
       default: "user",
     },
 
-    avatar: {
-      type: String,
-    },
-
     token: {
       type: String,
       selected: false,
@@ -63,8 +59,8 @@ const userSchema = mongoose.Schema(
       default: Date.now,
     },
     profileImage: {
-        type: String
-    }
+      type: String,
+    },
   },
 
   { typeKey: "type" },
