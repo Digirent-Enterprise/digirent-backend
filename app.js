@@ -4,6 +4,7 @@ const xss = require("xss-clean");
 const cors = require("cors");
 const routes = require("./routes/v1");
 const bodyParser = require("body-parser");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 // parse url encoded
@@ -32,9 +33,23 @@ app.use((req, res, next) => {
 app.use("/v1", routes);
 
 app.get("/", (req, res) => {
-  res.send("hello to digirent backend");
+  res.send("Hello to Digirent backend");
 });
 
+app.post("/create-payment-intent", async (req, res) => {
+  const { items } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 1200,
+    currency: "usd",
+    payment_method_types: ["card"],
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
 //handle 404
 app.use((req, res, next) => {
   // TODO: add handler for routes not found
