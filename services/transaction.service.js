@@ -1,7 +1,7 @@
 const { Transaction, Product } = require("../models");
 
 const getAllTransactions = async () => {
-  const transactions = await Transaction.find();
+  const transactions = await Transaction.find().populate('productId');
   if (transactions) return transactions;
   return false;
 };
@@ -41,7 +41,7 @@ const deleteTransactions = async (transactionId) => {
 const getTransactionDetail = async (transactionId) => {
   let transaction;
   try {
-    transaction = await Transaction.findOne({ _id: transactionId });
+    transaction = await Transaction.findOne({ _id: transactionId }).populate('productId');
   } catch (e) {
     if (e) return false;
   }
