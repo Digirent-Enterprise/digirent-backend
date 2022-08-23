@@ -40,12 +40,6 @@ const Transaction = new mongoose.Schema({
     type: Date,
     default: new Date().setDate(new Date().getDate() + 1),
   },
-
-  // 1: pending, 2: shipped, 3: paid
-  step: {
-    type: Number,
-    default: 1,
-  },
 });
 
 let Product = mongoose.model("Transaction", Transaction, "transactions");
