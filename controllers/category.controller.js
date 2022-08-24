@@ -25,7 +25,7 @@ const categoryController = {
   //get category
   getCategory: async (req, res) => {
     try {
-      const category = await Category.find({ name: req.params.name });
+      const category = await Category.find({ queryName: req.query.queryName }).populate('products');
       res.status(200).json(category);
     } catch (err) {
       res.status(500).json(err);
