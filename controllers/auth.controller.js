@@ -42,8 +42,9 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const found = await AuthService.findUser(email);
-  console.log(found)
   if (found) {
+    if (found.status === false)
+      return res.status(401).send("Account has been deactivated.");
     if (await bcrypt.compare(password, found.password)) {
       const response = await AuthService.loginUserWithEmailAndPassword(found);
       return res.status(200).json(response);
@@ -105,11 +106,14 @@ const resetForgottenPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  const { email, oldPassword, newPassword } = req.body;
+  const { email } = req.user;
+  if (!email) return res.sendStatus(404);
+  const { currentPassword, newPassword } = req.body;
   const found = await AuthService.findUser(email);
   if (!found) return res.sendStatus(404);
-  if (await bcrypt.compare(oldPassword, found.password)) {
+  if (await bcrypt.compare(currentPassword, found.password)) {
     const encodedPassword = await AuthService.encryptPassword(newPassword);
+    console.log("encodedPassword", encodedPassword);
     const response = await AuthService.changeUserPassword(
       email,
       encodedPassword,

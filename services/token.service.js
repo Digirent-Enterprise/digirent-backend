@@ -1,9 +1,14 @@
 const jwt = require("jsonwebtoken");
 
 const generateAccessToken = async (user) => {
-    console.log('userrrrrrrrrrrrrrrrrrrrr', user._id)
   return await jwt.sign(
-    { user_id: user._id, email: user.email, name: user.name, role: user.role },
+    {
+      user_id: user._id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      status: user.status,
+    },
     process.env.JWT_ACCESS_TOKEN_SECRET,
     {
       expiresIn: process.env.JWT_ACCESS_EXPIRATION_MINUTES,
@@ -14,7 +19,13 @@ const generateAccessToken = async (user) => {
 
 const generateRefreshToken = async (user) => {
   return await jwt.sign(
-    { user_id: user._id, email: user.email, name: user.name, role: user.role },
+    {
+      user_id: user._id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      status: user.status,
+    },
     process.env.JWT_REFRESH_TOKEN_SECRET,
     {
       expiresIn: process.env.JWT_REFRESH_EXPIRATION_DAYS,
