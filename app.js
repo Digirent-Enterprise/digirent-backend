@@ -50,6 +50,15 @@ app.post("/create-payment-intent", async (req, res) => {
     clientSecret: paymentIntent.client_secret,
   });
 });
+
+app.get("/v1/api/payment-intent", async (req, res) => {
+  console.log("runnnnnnnnnnnnn");
+  const { payment_intent } = req.query;
+  const fetched = await stripe.paymentIntents.retrieve(payment_intent);
+  console.log("fetched", fetched);
+  return res.json(fetched);
+});
+
 //handle 404
 app.use((req, res, next) => {
   // TODO: add handler for routes not found

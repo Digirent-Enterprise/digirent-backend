@@ -16,13 +16,13 @@ router.get("/transaction-detail", authenticateToken, (req, res) =>
 router.delete("/delete-transaction", authenticateAdmin, (req, res) =>
   transactionController.deleteTransaction(req, res),
 );
-router.put("/update-transaction", authenticateAdmin, (req, res) =>
+router.put("/update-transaction", authenticateToken, (req, res) =>
   transactionController.changeTransactionStatus(req, res),
 );
 router.get("/user-transaction", authenticateToken, (req, res) =>
   transactionController.getTransactionByUserEmail(req, res),
 );
-router.post("/create-transaction", authenticateAdmin, (req, res) =>
+router.post("/create-transaction", authenticateToken, (req, res) =>
   transactionController.createTransaction(req, res),
 );
 

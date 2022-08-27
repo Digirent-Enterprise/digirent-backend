@@ -23,10 +23,13 @@ const deleteTransaction = async (req, res) => {
 };
 
 const changeTransactionStatus = async (req, res) => {
-  const { id } = req.query;
-  const found = await TransactionService.changeTransactionStatus(id, req.body);
+  const { intent } = req.query;
+  const found = await TransactionService.changeTransactionStatus(
+    intent,
+    req.body,
+  );
   if (!found) return res.sendStatus(404);
-  return res.status(200).send('change status successfully');
+  return res.status(200).send("change status successfully");
 };
 
 const getTransactionDetail = async (req, res) => {
