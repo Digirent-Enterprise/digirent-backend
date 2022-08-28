@@ -37,11 +37,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/create-payment-intent", async (req, res) => {
-  const { items } = req.body;
-
+  const { transaction } = req.body;
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1200,
+    amount: transaction.rentalCost,
     currency: "usd",
     payment_method_types: ["card"],
   });
@@ -52,10 +51,8 @@ app.post("/create-payment-intent", async (req, res) => {
 });
 
 app.get("/v1/api/payment-intent", async (req, res) => {
-  console.log("runnnnnnnnnnnnn");
   const { payment_intent } = req.query;
   const fetched = await stripe.paymentIntents.retrieve(payment_intent);
-  console.log("fetched", fetched);
   return res.json(fetched);
 });
 

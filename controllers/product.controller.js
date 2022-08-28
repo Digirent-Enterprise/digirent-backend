@@ -71,7 +71,6 @@ const productController = {
   },
 
   uploadSingleImage: async (req, res) => {
-    console.log(req.files)
     const file = req.files[0];
     const urlObj = await CloudinaryService.uploadSingleFile(file);
     if (!urlObj) res.sendStatus(404);

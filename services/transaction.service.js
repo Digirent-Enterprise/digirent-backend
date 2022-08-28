@@ -13,13 +13,18 @@ const getTransactionByUserEmail = async (email) => {
   return false;
 };
 
-const changeTransactionStatus = async (transactionId, status) => {
+const changeTransactionStatus = async (intent, status) => {
   let transaction;
   try {
     transaction = await Transaction.findOneAndUpdate(
-      { _id: transactionId },
-      { ...status },
+      { intent: intent },
+      { $set: status },
     );
+    // make product unavailable
+    console.log('statusssssss', status)
+    if (status.productId && status.status && status.status === 'paid'){
+      await Product.findOneAndUpdate({_id: status.productId}, {status: false})
+    }
   } catch (e) {
     return false;
   }
@@ -49,10 +54,21 @@ const getTransactionDetail = async (transactionId) => {
   return false;
 };
 
+const getTransactionByIntent = async (intent) => {
+  let transaction;
+  try {
+    if (!intent) return false;
+    transaction = await Transaction.findOne({intent}).populate("productId");
+  } catch (e) {
+    return false;
+  }
+  if (transaction) return transaction
+  return false;
+}
+
 const createTransaction = async (transaction) => {
   let newTransaction;
   transaction = Object.assign(transaction, { status: "pending" });
-  console.log(transaction);
   try {
     newTransaction = new Transaction(transaction);
     await newTransaction.save();
@@ -71,4 +87,5 @@ module.exports = {
   changeTransactionStatus,
   getTransactionByUserEmail,
   createTransaction,
+  getTransactionByIntent
 };
