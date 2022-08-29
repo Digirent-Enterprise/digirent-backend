@@ -16,7 +16,7 @@ const getTransactionByUserEmail = async (req, res) => {
 };
 
 const deleteTransaction = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
   const deletedTransaction = await TransactionService.deleteTransactions(id);
   if (!deletedTransaction) res.sendStatus(404);
   return res.status(200).json(deletedTransaction);
@@ -24,7 +24,7 @@ const deleteTransaction = async (req, res) => {
 
 const changeTransactionStatus = async (req, res) => {
   const { intent } = req.body;
-  console.log(req.body)
+  console.log(req.body);
   const found = await TransactionService.changeTransactionStatus(
     intent,
     req.body,
@@ -44,17 +44,17 @@ const getTransactionDetail = async (req, res) => {
   return res.status(200).json(transaction);
 };
 
-const getTransactionByIntent = async (req,res) => {
-  const {intent} = req.query;
+const getTransactionByIntent = async (req, res) => {
+  const { intent } = req.query;
   if (!intent) return res.sendStatus(401);
-  const transaction = await TransactionService.getTransactionByIntent(intent)
+  const transaction = await TransactionService.getTransactionByIntent(intent);
   if (!transaction) return res.sendStatus(404);
   return res.json(transaction);
-}
+};
 
 const createTransaction = async (req, res) => {
   const data = await TransactionService.createTransaction(req.body);
-  console.log(data)
+  console.log(data);
   if (!data) return res.send("Some fields are missing or invalid");
   return res.status(200).send(data);
 };
@@ -66,5 +66,5 @@ module.exports = {
   deleteTransaction,
   changeTransactionStatus,
   createTransaction,
-  getTransactionByIntent
+  getTransactionByIntent,
 };
