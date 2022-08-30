@@ -40,6 +40,9 @@ const Transaction = new mongoose.Schema({
     type: Date,
     default: new Date().setDate(new Date().getDate() + 1),
   },
+  intent: {
+    type: String
+  }
 });
 
 let Product = mongoose.model("Transaction", Transaction, "transactions");

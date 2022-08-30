@@ -22,6 +22,11 @@ router.put("/update-transaction", authenticateToken, (req, res) =>
 router.get("/user-transaction", authenticateToken, (req, res) =>
   transactionController.getTransactionByUserEmail(req, res),
 );
+
+router.get("/get-transaction-by-intent", authenticateToken, (req, res) =>
+    transactionController.getTransactionByIntent(req, res)
+);
+
 router.post("/create-transaction", authenticateToken, (req, res) =>
   transactionController.createTransaction(req, res),
 );
