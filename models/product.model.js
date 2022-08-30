@@ -42,8 +42,8 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    default: "Tablets and Cellphones"
-  }
+    default: "Tablets and Cellphones",
+  },
 });
 
 let Product = mongoose.model("Product", productSchema);

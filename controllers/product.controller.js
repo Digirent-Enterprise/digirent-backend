@@ -1,6 +1,6 @@
 const { Product, Category } = require("../models");
 const { uploadMultipleFiles } = require("../services/cloudinary.service");
-const { CloudinaryService } = require("../services");
+const { CloudinaryService, TransactionService } = require("../services");
 
 const productController = {
   //add product
@@ -19,7 +19,10 @@ const productController = {
         category: req.body.category,
       });
       const savedProduct = await newProduct.save();
-      await Category.findOneAndUpdate({name: req.body.category}, {$push: {products: savedProduct._id}}).catch(e => console.log(e))
+      await Category.findOneAndUpdate(
+        { name: req.body.category },
+        { $push: { products: savedProduct._id } },
+      ).catch((e) => console.log(e));
       res.status(200).json(savedProduct);
     } catch (err) {
       res.status(500).json(err);
@@ -39,8 +42,24 @@ const productController = {
   //get product
   getProduct: async (req, res) => {
     try {
-      const product = await Product.findById(req.params.id)
-      res.status(200).json(product);
+      const product = await Product.findById(req.params.id);
+      const excludeIntervals =
+        await TransactionService.getTransactionExcludeIntervals(req.params.id);
+      const newMappingProduct = {
+        excludeIntervals: excludeIntervals,
+        images: product.images,
+        category: product.category,
+        _id: product._id,
+        name: product.name,
+        brand: product.brand,
+        description: product.description,
+        rentalCost: product.rentalCost,
+        rentalCostType: product.rentalCostType,
+        status: product.status,
+        serial: product.serial,
+        createdDate: product.createdDate,
+      };
+      res.status(200).json(newMappingProduct);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -49,8 +68,11 @@ const productController = {
   // update product
   updateProduct: async (req, res) => {
     try {
-      const product = await Product.findOneAndUpdate({_id: req.body.id}, { $set: req.body });
-      return res.status(200).send('updated successfully');
+      const product = await Product.findOneAndUpdate(
+        { _id: req.body.id },
+        { $set: req.body },
+      );
+      return res.status(200).send("updated successfully");
     } catch (err) {
       return res.status(500).json(err);
     }
