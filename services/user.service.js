@@ -56,11 +56,23 @@ const findAndUpdateUser = async (query, update, options) => {
   return User.findOneAndUpdate({ _id: query }, update, options);
 };
 
-const updateUser = async(id, data) => {
-  const updatedUser = await User.findOneAndUpdate({_id: id}, {$set: data}).select('-_id').select('-password').select('-token');
+const updateUser = async (id, data) => {
+  const updatedUser = await User.findOneAndUpdate({ _id: id }, { $set: data })
+    .select("-_id")
+    .select("-password")
+    .select("-token");
   if (!updatedUser) return false;
   return updatedUser;
-}
+};
+
+const adminUpdateUser = async (id, data) => {
+  const updatedUser = await User.findOneAndUpdate({ _id: id }, { $set: data })
+    .select("-_id")
+    .select("-password")
+    .select("-token");
+  if (!updatedUser) return false;
+  return updatedUser;
+};
 
 module.exports = {
   updateUser,
@@ -69,4 +81,5 @@ module.exports = {
   findUserByEmail,
   getAllUser,
   findAndUpdateUser,
+  adminUpdateUser,
 };

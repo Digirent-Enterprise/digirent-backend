@@ -41,16 +41,26 @@ const getUsers = async (req, res) => {
 
 const updateUser = async (req, res) => {
   if (!req.user) return res.sendStatus(401);
-  const {user_id} = req.user;
+  const { user_id } = req.user;
   const updated = await UserService.updateUser(user_id, req.body);
-  if (!updated) return res.status(501).send("Some fields are missing or user not found");
+  if (!updated)
+    return res.status(501).send("Some fields are missing or user not found");
   return res.json(updated);
-}
+};
+
+const adminUpdateUser = async (req, res) => {
+  const { id } = req.body;
+  const updated = await UserService.adminUpdateUser(id, req.body);
+  if (!updated)
+    return res.status(501).send("Some fields are missing or user not found");
+  return res.json(updated);
+};
 
 module.exports = {
   deleteUser,
   getUserDetail,
   getUsers,
   changeUserStatus,
-  updateUser
+  updateUser,
+  adminUpdateUser,
 };
