@@ -1,7 +1,7 @@
 const { Transaction, Product } = require("../models");
 
 const getAllTransactions = async () => {
-  const transactions = await Transaction.find().populate('productId');
+  const transactions = await Transaction.find().populate("productId");
   if (transactions) return transactions;
   return false;
 };
@@ -21,9 +21,12 @@ const changeTransactionStatus = async (intent, status) => {
       { $set: status },
     );
     // make product unavailable
-    console.log('statusssssss', status)
-    if (status.productId && status.status && status.status === 'paid'){
-      await Product.findOneAndUpdate({_id: status.productId}, {status: false})
+    console.log("statusssssss", status);
+    if (status.productId && status.status && status.status === "paid") {
+      await Product.findOneAndUpdate(
+        { _id: status.productId },
+        { status: false },
+      );
     }
   } catch (e) {
     return false;
@@ -46,7 +49,9 @@ const deleteTransactions = async (transactionId) => {
 const getTransactionDetail = async (transactionId) => {
   let transaction;
   try {
-    transaction = await Transaction.findOne({ _id: transactionId }).populate('productId');
+    transaction = await Transaction.findOne({ _id: transactionId }).populate(
+      "productId",
+    );
   } catch (e) {
     if (e) return false;
   }
@@ -58,13 +63,13 @@ const getTransactionByIntent = async (intent) => {
   let transaction;
   try {
     if (!intent) return false;
-    transaction = await Transaction.findOne({intent}).populate("productId");
+    transaction = await Transaction.findOne({ intent }).populate("productId");
   } catch (e) {
     return false;
   }
-  if (transaction) return transaction
+  if (transaction) return transaction;
   return false;
-}
+};
 
 const createTransaction = async (transaction) => {
   let newTransaction;
@@ -80,6 +85,19 @@ const createTransaction = async (transaction) => {
   return false;
 };
 
+const getTransactionExcludeIntervals = async (id) => {
+  const transactions = await Transaction.find({ productId: id });
+  if (transactions && transactions.length) {
+    return transactions.map((transaction) => {
+      return {
+        start: transaction.from,
+        end: transaction.to,
+      };
+    });
+  }
+  return [];
+};
+
 module.exports = {
   getAllTransactions,
   getTransactionDetail,
@@ -87,5 +105,6 @@ module.exports = {
   changeTransactionStatus,
   getTransactionByUserEmail,
   createTransaction,
-  getTransactionByIntent
+  getTransactionByIntent,
+  getTransactionExcludeIntervals,
 };
