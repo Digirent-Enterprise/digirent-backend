@@ -51,8 +51,8 @@ app.post("/create-payment-intent", async (req, res) => {
 });
 
 app.get("/v1/api/payment-intent", async (req, res) => {
-  const { payment_intent } = req.query;
-  const fetched = await stripe.paymentIntents.retrieve(payment_intent);
+  const { paymentIntent } = req.query;
+  const fetched = await stripe.paymentIntents.retrieve(paymentIntent);
   return res.json(fetched);
 });
 
