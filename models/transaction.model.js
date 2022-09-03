@@ -42,6 +42,10 @@ const Transaction = new mongoose.Schema({
   },
   intent: {
     type: String
+  },
+  createdAt: {
+    type: String,
+    default: Date.now
   }
 });
 

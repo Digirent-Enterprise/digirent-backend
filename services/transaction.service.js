@@ -98,6 +98,33 @@ const getTransactionExcludeIntervals = async (id) => {
   return [];
 };
 
+const getTransactionsStatistic = async () => {
+  const pending = await Transaction.find().count({status: 'pending'});
+  const paid = await Transaction.find().count({status: 'paid'});
+  if (!pending && !paid) return false;
+  return  {
+    pending, paid
+  }
+};
+
+const getRevenueByMonth = async () => {
+  const now = new Date();
+  const oneMonthAgo = now.setMonth(now.getMonth() - 1);
+  const oneMonthData = await Transaction.find({createdAt: {$gte:oneMonthAgo, $lt:now}, status: 'paid'});
+  const newObject = {}
+  const revenueByDate = oneMonthData.map(data => {
+    const transactionDay = new Date(Number(data.createdAt));
+    const transactionDate = transactionDay.getDate();
+    const transactionMonth = transactionDay.getMonth() + 1;
+    if (!newObject[`${transactionDate}/${transactionMonth}`]){
+      newObject[`${transactionDate}/${transactionMonth}`] = data.rentalCost + data.deposit + data.latePenalty;
+    } else {
+      newObject[`${transactionDate}/${transactionMonth}`] += data.rentalCost + data.deposit + data.latePenalty;
+    }
+  })
+  return newObject
+}
+
 module.exports = {
   getAllTransactions,
   getTransactionDetail,
@@ -107,4 +134,6 @@ module.exports = {
   createTransaction,
   getTransactionByIntent,
   getTransactionExcludeIntervals,
+  getTransactionsStatistic,
+  getRevenueByMonth
 };

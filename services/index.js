@@ -5,3 +5,4 @@ module.exports.CloudinaryService = require("./cloudinary.service");
 module.exports.EmailService = require("./email.service");
 module.exports.TransactionService = require('./transaction.service');
 module.exports.InquiryService = require('./inquiry.service')
+module.exports.CategoryService = require('./category.service')
