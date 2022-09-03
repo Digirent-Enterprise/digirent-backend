@@ -1,4 +1,4 @@
-const { Product, Category } = require("../models");
+const { Product, Category, Transaction} = require("../models");
 const { uploadMultipleFiles } = require("../services/cloudinary.service");
 const { CloudinaryService, TransactionService } = require("../services");
 
@@ -98,6 +98,19 @@ const productController = {
     if (!urlObj) res.sendStatus(404);
     return res.status(200).json({ url: urlObj.url });
   },
+
+  getMostRental: async (req, res) => {
+    const mostRental = await Transaction.aggregate([{
+      $group: {
+        _id: '$productId',
+        rentalTimes: {$count: {}},
+      },
+    },  {
+      $sort : { count : -1 }
+    }])
+    await Product.populate(mostRental, {path: '_id'})
+    return res.json(mostRental)
+  }
 };
 
 module.exports = productController;
