@@ -27,7 +27,6 @@ const productController = {
 
             const savedProduct = await newProduct.save();
             if(req.body.category){
-                // const category = Category.findById(req.body.category);
                 const category = Category.findById(req.body.category);
                 await category.updateOne({$push: {products: savedProduct._id}});
             }
@@ -62,6 +61,16 @@ const productController = {
     updateProduct: async(req, res) => {
         try{
             const product = await Product.findOneAndUpdate({_id: req.body.id}, {...req.body});
+
+            if(req.body.category){
+                // delete from the old category
+                await Category.updateMany({products: product._id}, {$pull: {products: product._id}});
+
+                // update into new category
+                const category = Category.findById(req.body.category);
+                await category.updateOne({$push: {products: product._id}});
+            }
+
             console.log('new product', product)
             res.status(200).json('Update successfully!');
         } catch(err){
