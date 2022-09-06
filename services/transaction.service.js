@@ -11,7 +11,7 @@ const getAllTransactions = async () => {
 
 const getTransactionByUserEmail = async (email) => {
   console.log("email ", email);
-  const transactions = await Transaction.find({ userEmail: email });
+  const transactions = await Transaction.find({ userEmail: email }).populate('productId');
   if (transactions) return transactions;
   return false;
 };
