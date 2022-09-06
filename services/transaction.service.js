@@ -1,5 +1,8 @@
 const { Transaction, Product } = require("../models");
-
+const {fillMonths} = require("../utils/date");
+const {DateFormat} = require("../utils");
+const {CategoryService} = require("./index");
+const {DefaultCategories, DefaultCatPrices} = require("../constant/categories");
 const getAllTransactions = async () => {
   const transactions = await Transaction.find().populate("productId");
   if (transactions) return transactions;
@@ -124,6 +127,36 @@ const getRevenueByMonth = async () => {
   })
   return newObject
 }
+const getRevenueByYear = async () => {
+  const now = new Date();
+  const oneYearAgo = now.setMonth(now.getMonth() - 12);
+  const oneYearData = await Transaction.find({createdAt: {$gte:oneYearAgo}, status: 'paid'});
+  const newObject = {}
+  const revenueByYear = oneYearData.map(data => {
+    const transactionDay = new Date(Number(data.createdAt));
+    const transactionMonth = transactionDay.getMonth() + 1;
+    const transactionYear = transactionDay.getFullYear();
+    if (!newObject[`${transactionMonth}/${transactionYear}`]){
+      newObject[`${transactionMonth}/${transactionYear}`] = data.rentalCost + data.deposit + data.latePenalty;
+    } else {
+      newObject[`${transactionMonth}/${transactionYear}`] += data.rentalCost + data.deposit + data.latePenalty;
+    }
+  })
+  return DateFormat.fillMonths(newObject)
+}
+
+const getRevenueByCategories = async () => {
+  const trans = await Transaction.find({status: 'paid'}).populate('productId');
+  const result = {...DefaultCatPrices}
+  const mapping = trans.map(tran => {
+    const rentalCost = tran.rentalCost + tran.deposit + tran.latePenalty;
+    const catName = tran.productId.category;
+    if (DefaultCategories.includes(catName)) {
+        result[catName] += rentalCost;
+    }
+  })
+  return result;
+}
 
 module.exports = {
   getAllTransactions,
@@ -135,5 +168,7 @@ module.exports = {
   getTransactionByIntent,
   getTransactionExcludeIntervals,
   getTransactionsStatistic,
-  getRevenueByMonth
+  getRevenueByMonth,
+  getRevenueByYear,
+  getRevenueByCategories
 };

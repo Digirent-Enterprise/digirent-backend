@@ -1,4 +1,4 @@
-const {TransactionService, CategoryService} = require("../services");
+const {TransactionService, CategoryService, UserService} = require("../services");
 
 const getTransactionsStatistic = async (req, res) => {
     const statistic = await TransactionService.getTransactionsStatistic()
@@ -16,8 +16,26 @@ const getCategoryPercentage = async (req,res) => {
     return res.json(statistic);
 }
 
+const getUserStatistic = async (req, res) => {
+    const userStatistic = await UserService.getUserStatistic();
+    return res.json(userStatistic);
+}
+
+const getRevenueByYear = async (req, res) => {
+    const revenueByYear = await TransactionService.getRevenueByYear();
+    return res.json(revenueByYear)
+}
+
+const getRevenueByCats = async (req,res) => {
+    const revenueByCats = await TransactionService.getRevenueByCategories();
+    return res.json(revenueByCats);
+}
+
 module.exports = {
     getTransactionsStatistic,
     getCategoryPercentage,
-    getRevenue
+    getRevenue,
+    getUserStatistic,
+    getRevenueByYear,
+    getRevenueByCats
 }

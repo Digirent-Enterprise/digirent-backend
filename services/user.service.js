@@ -74,6 +74,15 @@ const adminUpdateUser = async (id, data) => {
   return updatedUser;
 };
 
+const getUserStatistic = async () => {
+  const activeUsers = await User.find({status: true}).count();
+  const deactivatedUsers = await User.find({status: false}).count();
+  return {
+    activeUsers: activeUsers | 0,
+    deactivatedUsers: deactivatedUsers | 0
+  }
+}
+
 module.exports = {
   updateUser,
   createUser,
@@ -82,4 +91,5 @@ module.exports = {
   getAllUser,
   findAndUpdateUser,
   adminUpdateUser,
+  getUserStatistic
 };
