@@ -7,6 +7,7 @@ const transactionRoute = require("./transaction.route");
 const inquiryRoute = require('./inquiry.route');
 const chatRoute = require("./chat.route")
 const messageRoute = require("./message.route")
+const statisticRoute = require('./statistic.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -41,6 +42,10 @@ const defaultRoutes = [
   {
     path: "/api/message",
     route: messageRoute
+  },
+  {
+    path: "/api/statistic",
+    route: statisticRoute
   }
 ];
 
