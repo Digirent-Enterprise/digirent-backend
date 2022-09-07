@@ -1,4 +1,4 @@
-const { Product, Category, Transaction} = require("../models");
+const { Product, Category, Transaction } = require("../models");
 const { uploadMultipleFiles } = require("../services/cloudinary.service");
 const { CloudinaryService, TransactionService } = require("../services");
 
@@ -65,26 +65,31 @@ const productController = {
     }
   },
 
-    // update product
-    updateProduct: async(req, res) => {
-        try{
-            const product = await Product.findOneAndUpdate({_id: req.body.id}, {...req.body});
+  // update product
+  updateProduct: async (req, res) => {
+    try {
+      const product = await Product.findOneAndUpdate(
+        { _id: req.body.id },
+        { ...req.body },
+      );
 
-            if(req.body.category){
-                // delete from the old category
-                await Category.updateMany({products: product._id}, {$pull: {products: product._id}});
+      if (req.body.category) {
+        // delete from the old category
+        await Category.updateMany(
+          { products: product._id },
+          { $pull: { products: product._id } },
+        );
 
-                // update into new category
-                const category = Category.findById(req.body.category);
-                await category.updateOne({$push: {products: product._id}});
-            }
+        // update into new category
+        const category = Category.find({ name: req.body.category });
+        await category.updateOne({ $push: { products: product._id } });
+      }
 
-            console.log('new product', product)
-            res.status(200).json('Update successfully!');
-        } catch(err){
-            res.status(500).json(err);
-        }
-    },
+      res.status(200).json("Update successfully!");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 
   // delete product
   deleteProduct: async (req, res) => {
@@ -108,17 +113,20 @@ const productController = {
   },
 
   getMostRental: async (req, res) => {
-    const mostRental = await Transaction.aggregate([{
-      $group: {
-        _id: '$productId',
-        rentalTimes: {$count: {}},
+    const mostRental = await Transaction.aggregate([
+      {
+        $group: {
+          _id: "$productId",
+          rentalTimes: { $count: {} },
+        },
       },
-    },  {
-      $sort : { count : -1 }
-    }])
-    await Product.populate(mostRental, {path: '_id'})
-    return res.json(mostRental)
-  }
+      {
+        $sort: { count: -1 },
+      },
+    ]);
+    await Product.populate(mostRental, { path: "_id" });
+    return res.json(mostRental);
+  },
 };
 
 module.exports = productController;

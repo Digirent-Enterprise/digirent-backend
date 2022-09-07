@@ -78,8 +78,8 @@ const getUserStatistic = async () => {
   const activeUsers = await User.find({status: true}).count();
   const deactivatedUsers = await User.find({status: false}).count();
   return {
-    activeUsers: activeUsers | 0,
-    deactivatedUsers: deactivatedUsers | 0
+    active: activeUsers | 0,
+    deactivated: deactivatedUsers | 0
   }
 }
 
