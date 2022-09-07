@@ -24,7 +24,6 @@ const changeTransactionStatus = async (intent, status) => {
       { $set: status },
     );
     // make product unavailable
-    console.log("statusssssss", status);
     if (status.productId && status.status && status.status === "paid") {
       await Product.findOneAndUpdate(
         { _id: status.productId },
