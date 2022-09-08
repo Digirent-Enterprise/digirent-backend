@@ -6,6 +6,7 @@ const productRoute = require("./product.route");
 const transactionRoute = require("./transaction.route");
 const inquiryRoute = require('./inquiry.route');
 const statisticRoute = require('./statistic.route');
+const intentRoute = require('./intent.route')
 const router = express.Router();
 
 const defaultRoutes = [
@@ -36,6 +37,10 @@ const defaultRoutes = [
   {
     path: "/api/statistic",
     route: statisticRoute
+  },
+  {
+    path: "/api/intent",
+    route: intentRoute
   }
 ];
 
