@@ -97,6 +97,7 @@ const verifyForgotPasswordRequest = catchAsync(async (req, res) => {
 });
 
 const resetForgottenPassword = catchAsync(async (req, res) => {
+  console.log('emaillllll')
   const { email } = req;
   const { newPassword } = req.body;
   const encodedPassword = await AuthService.encryptPassword(newPassword);
