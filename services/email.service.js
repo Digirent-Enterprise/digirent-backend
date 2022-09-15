@@ -22,7 +22,6 @@ const sendEmail = async (receiver, token) => {
   // accessToken = await OAuth2Client.getAccessToken().catch(async (e) => {
   //   if (e) {
   //     const refresh = await OAuth2Client.refreshAccessToken();
-  //     console.log('access token', refresh)
   //     accessToken = OAuth2Client.getAccessToken();
   //   }
   // });

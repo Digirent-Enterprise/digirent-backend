@@ -97,7 +97,6 @@ const verifyForgotPasswordRequest = catchAsync(async (req, res) => {
 });
 
 const resetForgottenPassword = catchAsync(async (req, res) => {
-  console.log('emaillllll')
   const { email } = req;
   const { newPassword } = req.body;
   const encodedPassword = await AuthService.encryptPassword(newPassword);
@@ -114,7 +113,6 @@ const resetPassword = catchAsync(async (req, res) => {
   if (!found) return res.sendStatus(404);
   if (await bcrypt.compare(currentPassword, found.password)) {
     const encodedPassword = await AuthService.encryptPassword(newPassword);
-    console.log("encodedPassword", encodedPassword);
     const response = await AuthService.changeUserPassword(
       email,
       encodedPassword,

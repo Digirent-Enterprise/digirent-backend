@@ -5,7 +5,6 @@ const { CloudinaryService, TransactionService } = require("../services");
 const productController = {
   //add product
   addProduct: async (req, res) => {
-    console.log(req.body);
     try {
       const newProduct = new Product({
         name: req.body.name,
@@ -22,7 +21,7 @@ const productController = {
       await Category.findOneAndUpdate(
         { name: req.body.category },
         { $push: { products: savedProduct._id } },
-      ).catch((e) => console.log(e));
+      ).catch((e) => res.status(500).json(e));
       res.status(200).json(savedProduct);
     } catch (err) {
       res.status(500).json(err);

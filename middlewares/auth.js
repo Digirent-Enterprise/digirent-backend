@@ -16,7 +16,6 @@ const authenticateAdmin = async (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) res.sendStatus(401);
   jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) console.log(err);
     if (err) return res.sendStatus(403);
     req.user = user;
     if (user.role !== "admin") return res.sendStatus(403);
@@ -27,11 +26,8 @@ const authenticateAdmin = async (req, res, next) => {
 const authenticateResetPasswordToken = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log(token)
   if (!token) res.sendStatus(401);
   jwt.verify(token, process.env.JWT_FORGET_PASSWORD_SECRET, (err, user) => {
-    console.log(user)
-    if (err) console.log("err ", err);
     if (err) return res.status(403).send("Invalid token");
     req.email = user.email;
     next();

@@ -2,7 +2,6 @@ const fillMonths = (monthYear) => {
     let newMonthYear = {...monthYear};
     const key = Object.keys(newMonthYear)[0]
     const year = key.split('/')[1];
-    console.log(year)
     if (year){
         for (let item = 1; item <= 12; item ++){
             const keyPair = `${item}/${year}`

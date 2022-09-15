@@ -24,7 +24,6 @@ const deleteTransaction = async (req, res) => {
 
 const changeTransactionStatus = async (req, res) => {
   const { intent } = req.body;
-  console.log(req.body);
   const found = await TransactionService.changeTransactionStatus(
     intent,
     req.body,
@@ -54,7 +53,6 @@ const getTransactionByIntent = async (req, res) => {
 
 const createTransaction = async (req, res) => {
   const data = await TransactionService.createTransaction(req.body);
-  console.log(data);
   if (!data) return res.send("Some fields are missing or invalid");
   return res.status(200).send(data);
 };
