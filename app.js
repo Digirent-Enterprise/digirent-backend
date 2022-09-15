@@ -1,34 +1,43 @@
-const express = require('express');
-const helmet = require('helmet');
-const xss = require('xss-clean');
-const cors = require('cors');
-const routes = require('./routes/v1');
+const express = require("express");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const cors = require("cors");
+const routes = require("./routes/v1");
+const bodyParser = require("body-parser");
 
 const app = express();
+// parse url encoded
+app.use(express.json()); // Used to parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // for form data
+app.use(express.static("public"));
 
-// security config
+// security
+app.use(xss());
+app.use(cors());
+app.options("*", cors);
 app.use(helmet());
 
-// parse json request with express
-app.use(express.json())
+//set default view engine
 
-// parse url encoded
-app.use(express.urlencoded({extended: true}))
+app.set("view engine", "ejs");
 
-// sanitize request
-app.use(xss());
+app.use((req, res, next) => {
+  res.locals.message = req.session?.message;
+  if (req.session) delete req.session.message;
+  next();
+});
 
-// cross origin enable
+//default route for image storage
 
-app.use(cors());
-app.options('*', cors);
+app.use("/v1", routes);
 
-
-app.use('/v1', routes);
+app.get("/", (req, res) => {
+  res.send("Hello to Digirent backend");
+});
 
 //handle 404
-app.use((req,res,next) => {
-   // TODO: add handler for routes not found
-})
+app.use((req, res, next) => {
+  // TODO: add handler for routes not found
+});
 
 module.exports = app;

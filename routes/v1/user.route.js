@@ -1,19 +1,30 @@
-const express = require('express');
-const auth = require('../../middlewares/auth');
-const userValidation = require('../../validations/user.validation');
-const {userController} = require('../../controllers');
-
+const express = require("express");
+const { userController } = require("../../controllers");
+const {
+  authenticateAdmin,
+  authenticateToken,
+} = require("../../middlewares/auth");
 const router = express.Router();
 
-// router
-//     .route('/')
-//     .post(auth('manageUsers'), (req,res,next) => userController.register(req,res,next))
-//     .get(auth('getUsers'), (req,res,next) =>userController.getUsers(req,res,next))
-//
-// router
-//     .route('/:userId')
-//     .get(auth('getUsers'), (req,res,next) => userController.getUser(req,res,next))
-//     .patch(auth('manageUsers'), (req,res,next) =>userController.updateUser(req,res,next))
-//     .delete(auth('manageUsers'), (req,res,next) =>userController.deleteUser(req,res,next))
+router.post("/delete-user", authenticateAdmin, (req, res) =>
+  userController.deleteUser(req, res),
+);
+router.put("/change-status", authenticateToken, (req, res) =>
+  userController.changeUserStatus(req, res),
+);
+router.get("/user-detail", authenticateToken, (req, res) =>
+  userController.getUserDetail(req, res),
+);
+router.get("/users", authenticateAdmin, (req, res) =>
+  userController.getUsers(req, res),
+);
+
+router.put("/edit-user", authenticateToken, (req, res) =>
+  userController.updateUser(req, res),
+);
+
+router.put("/admin-edit-user", authenticateAdmin, (req, res) =>
+  userController.adminUpdateUser(req, res),
+);
 
 module.exports = router;
